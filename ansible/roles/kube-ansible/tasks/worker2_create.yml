@@ -1,0 +1,50 @@
+---
+- name: include the dependent resources for worker2
+  include: register_master_firewall.yml
+
+- name: create an address for worker2
+  gcp_compute_address:
+    name: "{{ instance3_name }}"
+    region: "{{ gcp_region }}"
+    project: "{{ gcp_project_name }}"
+    auth_kind: "{{ gcp_auth_kind }}"
+    service_account_file: "{{ gcp_service_account_file }}"
+    state: present
+  register: address
+
+- name: create a disk for worker2
+  gcp_compute_disk:
+    name: "{{ instance3_name }}"
+    size_gb: "{{ disk_size_gb }}"
+    source_image: "{{ image }}"
+    zone: "{{ gcp_zone }}"
+    project: "{{ gcp_project_name }}"
+    auth_kind: "{{ gcp_auth_kind }}"
+    service_account_file: "{{ gcp_service_account_file }}"
+    state: present
+  register: disk
+
+- name:  create an instance for worker2
+  gcp_compute_instance:
+    labels:
+      type: "{{ server_type2 }}"
+    state: present
+    disks: 
+      - auto_delete: true
+        boot: true
+        source: "{{ disk }}"
+    machine_type:  "{{ machine_type }}"
+    name:  "{{ instance3_name }}"
+    network_interfaces: 
+      - network: "{{ network }}"
+        subnetwork: "{{ subnet }}"
+        access_configs:
+          - name: External NAT
+            nat_ip: "{{ address }}"
+            type: ONE_TO_ONE_NAT
+    zone: "{{ gcp_zone }}"
+    project: "{{ gcp_project_name }}"
+    auth_kind: "{{ gcp_auth_kind }}"
+    service_account_file: "{{ gcp_service_account_file }}"
+  register: instance
+

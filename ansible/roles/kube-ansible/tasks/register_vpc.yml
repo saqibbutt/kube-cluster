@@ -1,0 +1,19 @@
+---
+- name: register the existing network
+  gcp_compute_network:
+    name: "{{ network_name }}"
+    project: "{{ gcp_project_name }}"
+    auth_kind: "{{ gcp_auth_kind }}"
+    service_account_file: "{{ gcp_service_account_file }}"
+  register: network
+
+- name: register the existing subnetwork
+  gcp_compute_subnetwork:
+    name: "{{ subnet_name }}"
+    region: "{{ gcp_region }}"
+    network: "{{ network }}"
+    ip_cidr_range: "{{ ip_cidr_range }}"
+    project: "{{ gcp_project_name }}"
+    auth_kind: "{{ gcp_auth_kind }}"
+    service_account_file: "{{ gcp_service_account_file }}"
+  register: subnet

@@ -1,0 +1,81 @@
+---
+- name: update apt cache
+  apt:
+    pkg:
+    - ca-certificates
+    - curl
+    - gnupg
+    - lsb-release
+    - apt-transport-https
+    update_cache: yes
+
+
+- name: Add the overlay module
+  modprobe:
+    name: overlay
+    state: present
+
+- name: Add the br_netfilter module
+  modprobe:
+    name: br_netfilter
+    state: present
+
+- name: create docker config directory
+  file: 
+    path: /etc/docker
+    state: directory
+  
+- name: Copy file with owner and permissions
+  copy:
+    src: docker_fix.json
+    dest: /etc/docker/daemon.json
+
+- name: add a gpg key for docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    validate_certs: false
+    state: present
+
+- name: add the docker apt repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu focal stable
+    state: present
+    filename: 'docker'
+
+- name: update apt cache and install docker
+  apt:
+    pkg: 
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    state: present
+    update_cache: yes
+
+
+- name: tweak docker for kubelet
+  systemd:
+    daemon_reload: yes
+    state: restarted
+    name: docker
+
+
+- name: add a gpg key for kubernetes
+  apt_key:
+     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+     validate_certs: false
+     state: present
+
+- name: add Kubernetes apt repository
+  apt_repository:
+    repo: 'deb http://apt.kubernetes.io/ kubernetes-xenial main'
+    state: present
+    filename: 'kubernetes'
+
+- name: update apt cache and install kubernetes essentials for all nodes
+  apt:
+    pkg:
+    - kubelet
+    - kubeadm
+    - kubernetes-cni
+    state: present
+    update_cache: yes

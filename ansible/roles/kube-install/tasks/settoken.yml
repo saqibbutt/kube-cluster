@@ -1,0 +1,10 @@
+---
+- name: copy the token to worker(s)
+  copy:
+    src: "{{ role_path }}/files/joiningk8sthecluster.sh"
+    dest: ~/node_joined.sh
+    follow: yes
+    mode: 755
+
+- name: join cluster
+  shell: ~/node_joined.sh

@@ -1,0 +1,47 @@
+---
+- name: update apt cache
+  apt:
+    pkg:
+    - ca-certificates
+    - curl
+    - gnupg
+    - lsb-release
+    - apt-transport-https
+    - net-tools
+    update_cache: yes
+
+- name: add a gpg key for docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    file: /usr/share/keyrings/docker-archive-keyring.gpg
+
+- name: add the docker apt repository
+  shell: echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+- name: update apt cache and install docker
+  apt:
+    pkg: 
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    state: present
+    update_cache: yes
+
+- name: add a gpg key for kubernetes
+  apt_key:
+     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+- name: add Kubernetes apt repository
+  apt_repository:
+    repo: 'deb http://apt.kubernetes.io/ kubernetes-xenial main'
+    state: present
+    filename: 'kubernetes'
+
+- name: update apt cache and install kubernetes essentials for all nodes
+  apt:
+    pkg:
+    - kubelet
+    - kubeadm
+    - kubernetes-cni
+    state: present
+    update_cache: yes

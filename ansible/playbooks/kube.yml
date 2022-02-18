@@ -1,0 +1,7 @@
+---
+- name: Install master and worker kubernetes
+  gather_facts: no
+  hosts: label_type_master, label_type_worker
+  
+  roles:
+    - role: kube-install

@@ -1,0 +1,7 @@
+---
+- name: Create master and node for kubernetes
+  gather_facts: no
+  hosts: localhost
+  
+  roles:
+    - role: kube-ansible

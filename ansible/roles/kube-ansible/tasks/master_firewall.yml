@@ -1,0 +1,19 @@
+---
+- name: register required vpc resources
+  include: register_vpc.yml
+
+- name: create a kubernetes firewall
+  gcp_compute_firewall:
+    name: "{{ firewall_master_name }}"
+    network: "{{ network }}"
+    allowed:
+      - ip_protocol: tcp
+        ports: ['22', '80', '443', '2379','2380', '6443', '8090', '8091', '8443', '10250', '10251', '10252', '10255']
+      - ip_protocol: udp
+        ports: ['8472']
+    source_ranges: ['0.0.0.0/0']
+    project: "{{ gcp_project_name }}"
+    auth_kind: "{{ gcp_auth_kind }}"
+    service_account_file: "{{ gcp_service_account_file }}"
+    state: present
+  register: firewall

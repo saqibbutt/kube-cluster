@@ -1,0 +1,9 @@
+
+plugin: gcp_compute
+projects:
+  - cloudconcepts-337405
+service_account_file: ~/ansible_ws/kube-cluster/ansible/inventories/service_accountadm.json
+auth_kind: serviceaccount
+keyed_groups:
+    - key: labels
+      prefix: label

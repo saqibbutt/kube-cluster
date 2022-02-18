@@ -1,0 +1,41 @@
+---
+- import_tasks: vpc_create.yml
+  tags:
+    - createvpc
+
+#- import_tasks: vpc_delete.yml
+#  tags:
+#    - deletevpc
+
+- import_tasks: master_firewall.yml
+  tags:
+    - createmasterfw 
+
+# instance creation tasks and tags
+
+- import_tasks: master_create.yml
+  tags:
+    - createmastervm
+
+- import_tasks: master_delete.yml
+  tags:
+    - deletemastervm
+
+- import_tasks: worker1_create.yml
+  tags:
+    - createworker1vm
+
+- import_tasks: worker1_delete.yml
+  tags:
+    - deleteworker1vm
+
+- import_tasks: worker2_create.yml
+  tags:
+    - createworker2vm
+
+- import_tasks: worker2_delete.yml
+  tags:
+    - deleteworker2vm
+
+
+     

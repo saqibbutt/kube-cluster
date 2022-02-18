@@ -1,0 +1,19 @@
+---
+gcp_region: "europe-north1"
+gcp_zone: "europe-north1-b"
+
+instance1_name: "master"
+instance2_name: "worker1"
+instance3_name: "worker2"
+machine_type: "e2-standard-4"
+disk_size_gb: 50
+image: "projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220118"
+
+network_name: "kube-network"
+subnet_name: "kube-subnet"
+ip_cidr_range: "172.16.0.0/28"
+
+firewall_master_name: "kube-master-firewall"
+
+server_type1: "master"
+server_type2: "worker"

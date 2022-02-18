@@ -1,0 +1,25 @@
+---
+
+# installation tasks and tags
+
+- import_tasks: kube_install1.yml
+  tags:
+     - kinstallall
+
+- import_tasks: kube_install2.yml
+  tags:
+     - kinstallmaster
+
+- import_tasks: config_master.yml
+  tags:
+     - kconfigmaster
+
+- import_tasks: gettoken.yml
+  tags:
+     - kgettoken
+
+- import_tasks: settoken.yml
+  tags:
+     - ksettoken
+
+     
