@@ -1,5 +1,5 @@
 ---
 gcp_project_name: "cloudconcepts-337405"
 gcp_auth_kind: "serviceaccount"
-gcp_service_account_file: "~/ansible_ws/kube-cluster/ansible/inventories/service_accountadm.json"
+gcp_service_account_file: "~/ansible_ws/kube-cluster/keys/gcpserviceaccount.json"
 gcp_scopes: "https://www.googleapis.com/auth/compute"

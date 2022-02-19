@@ -11,7 +11,6 @@ sudo apt-get install helm
 ```
 
 ```
-chmod 600 ~/.kube/config
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm install ingress --namespace ingress --create-namespace --set rbac.create=true,controller.kind=DaemonSet,controller.service.type=ClusterIP,controller.hostNetwork=true ingress-nginx/ingress-nginx
 ```
